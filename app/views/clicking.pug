@@ -1,0 +1,16 @@
+extends layout
+
+block append vars
+  - pageTitle = 'Clicking'
+
+block append scripts
+  script(type='text/javascript', src='common/ajax-functions.js')
+  script(type='text/javascript', src='controllers/clickController.client.js')
+  script(type='text/javascript', src='controllers/userController.client.js')
+
+block content
+  p You have clicked the button #[span#click-nbr] times.
+
+  div.buttons.text-center
+    button(type='submit').btn.btn-primary.btn-add CLICK ME!
+    button.btn.btn-danger.btn-delete RESET

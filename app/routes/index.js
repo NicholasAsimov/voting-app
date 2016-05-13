@@ -1,7 +1,7 @@
-'use strict';
+const path = process.cwd();
+const ClickHandler = require(`${path}/app/controllers/clickHandler.server.js`);
 
-var path = process.cwd();
-var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+const dummyData = {};
 
 module.exports = function(app, passport) {
 
@@ -32,6 +32,10 @@ module.exports = function(app, passport) {
     res.render('profile');
   });
 
+  app.route('/clicking').get(isLoggedIn, (req, res) => {
+    res.render('clicking');
+  });
+
   app.route('/api/:id').get(isLoggedIn, (req, res) => {
     res.json(req.user.github);
   });
@@ -43,5 +47,8 @@ module.exports = function(app, passport) {
     failureRedirect: '/login'
   }));
 
-  app.route('/api/:id/clicks').get(isLoggedIn, clickHandler.getClicks).post(isLoggedIn, clickHandler.addClick).delete(isLoggedIn, clickHandler.resetClicks);
+  app.route('/api/:id/clicks')
+    .get(isLoggedIn, clickHandler.getClicks)
+    .post(isLoggedIn, clickHandler.addClick)
+    .delete(isLoggedIn, clickHandler.resetClicks);
 };
