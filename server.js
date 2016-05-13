@@ -14,6 +14,9 @@ app.use('/controllers', express.static(`${process.cwd()}/app/controllers`));
 app.use('/public', express.static(`${process.cwd()}/public`));
 app.use('/common', express.static(`${process.cwd()}/app/common`));
 
+app.set('views', './app/views');
+app.set('view engine', 'pug');
+
 app.use(session({
   secret: 'secretClementine',
   resave: false,

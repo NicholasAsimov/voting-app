@@ -1,0 +1,47 @@
+{
+  "name": "voting-app",
+  "description": "Dynamic Web Application Project - Voting App.",
+  "main": "server.js",
+  "authors": [
+    "Nicholas Asimov"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "MongoDB",
+    "Mongoose",
+    "full",
+    "stack",
+    "Express",
+    "Node",
+    "javascript",
+    "boilerplate"
+  ],
+  "homepage": "https://github.com/NicholasAsimov/voting-app",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "less/font-awesome.less",
+        "css/font-awesome.min.css",
+        "scss/font-awesome.scss"
+      ]
+    }
+  }
+}

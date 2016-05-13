@@ -29,13 +29,19 @@
     "express-session": "^1.11.3",
     "mongoose": "^4.1.0",
     "passport": "^0.3.0",
-    "passport-github": "^1.0.0"
+    "passport-github": "^1.0.0",
+    "pug": "^2.0.0-alpha7"
   },
   "devDependencies": {
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "^7.0.0",
     "eslint-plugin-import": "^1.4.0",
     "eslint-plugin-jsx-a11y": "^0.6.2",
-    "eslint-plugin-react": "^5.0.0"
+    "eslint-plugin-react": "^5.0.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^2.0.0",
+    "gulp-inject": "^4.0.0",
+    "nodemon": "^1.9.2",
+    "wiredep": "^4.0.0"
   }
 }

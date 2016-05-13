@@ -37,3 +37,6 @@ data
 
 # dotenv
 .env
+
+# bower modules
+public/lib
