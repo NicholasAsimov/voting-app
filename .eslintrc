@@ -4,5 +4,9 @@
     "no-console": "off",
     "comma-dangle": "off",
     "no-shadow": "off"
+  },
+  "globals": {
+    "$": 1,
+    "appUrl": 1
   }
 }

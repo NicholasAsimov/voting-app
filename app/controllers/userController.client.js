@@ -1,37 +1,27 @@
-'use strict';
-
 (function () {
+  const profileId = document.querySelector('#profile-id') || null;
+  const profileUsername = document.querySelector('#profile-username') || null;
+  const profileRepos = document.querySelector('#profile-repos') || null;
+  const displayName = document.querySelector('#display-name');
+  const apiUrl = `${appUrl}/api/user`;
 
-   var profileId = document.querySelector('#profile-id') || null;
-   var profileUsername = document.querySelector('#profile-username') || null;
-   var profileRepos = document.querySelector('#profile-repos') || null;
-   var displayName = document.querySelector('#display-name');
-   var apiUrl = appUrl + '/api/:id';
+  $.get(apiUrl, user => {
+    if (user.displayName !== null) {
+      displayName.innerText = user.displayName;
+    } else {
+      displayName.innerText = 'username';
+    }
 
-   function updateHtmlElement (data, element, userProperty) {
-      element.innerHTML = data[userProperty];
-   }
+    if (profileId !== null) {
+      profileId.innerText = user.id;
+    }
 
-   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, function (data) {
-      var userObject = JSON.parse(data);
+    if (profileUsername !== null) {
+      profileUsername.innerText = user.username;
+    }
 
-      if (userObject.displayName !== null) {
-         updateHtmlElement(userObject, displayName, 'displayName');
-      } else {
-         updateHtmlElement(userObject, displayName, 'username');
-      }
-
-      if (profileId !== null) {
-         updateHtmlElement(userObject, profileId, 'id');   
-      }
-
-      if (profileUsername !== null) {
-         updateHtmlElement(userObject, profileUsername, 'username');   
-      }
-
-      if (profileRepos !== null) {
-         updateHtmlElement(userObject, profileRepos, 'publicRepos');   
-      }
-
-   }));
-})();
+    if (profileRepos !== null) {
+      profileRepos.innerText = user.publicRepos;
+    }
+  });
+}());

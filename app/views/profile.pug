@@ -4,25 +4,24 @@ block append vars
   - pageTitle = 'Profile'
 
 block append scripts
-  script(type='text/javascript', src='common/ajax-functions.js')
-  script(type='text/javascript', src='controllers/userController.client.js')
+  //-script(type='text/javascript', src='common/ajax-functions.js')
+  //-script(type='text/javascript', src='controllers/userController.client.js')
 
 block content
-  .github-profile
-    img(src='/public/img/gh-mark-32px.png', alt='github logo')
-    p
-      span ID:
-      span#profile-id.profile-value
-    p
-      span Username666:
-      span#profile-username.profile-value
-    p
-      span Display Name:
-      span#display-name.profile-value
-    p
-      span Repositories:
-      span#profile-repos.profile-value
+  .profile.text-center
+    .github-profile
+      h3 Your Github profile
+      p
+        span ID:
+        span#profile-id.profile-value #{user.id}
+      p
+        span Username:
+        span#profile-username.profile-value #{user.username}
+      p
+        span Display Name:
+        span#display-name.profile-value #{user.displayName}
+      p
+        span Repositories:
+        span#profile-repos.profile-value #{user.publicRepos}
 
-    a.menu(href='/') Home
-    p#menu-divide |
-    a.menu(href='/logout') Logout
+    a(href='/logout').btn.btn-default Logout

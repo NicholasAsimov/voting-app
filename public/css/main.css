@@ -28,26 +28,14 @@ body {
 /****** Profile Styling ******/
 
 .github-profile {
-	width: 350px;
-	height: 200px;
 	border-radius: 3px;
-	margin: 86px auto 0 auto;
-	background-color: #EEE;
-	text-align: center;
-	color: #000;
-}
-
-.github-profile p:first-child {
-	padding-top: 16px;
-}
-
-.github-profile p:nth-child(5) {
-	margin-bottom: 16px
+	background-color: #c8bbbb;
+  margin-bottom: 10px;
 }
 
 .github-profile p {
 	margin: 0 0 0 16px;
-	text-align: left;
+	/*text-align: left;*/
 }
 
 .profile-value {
@@ -56,23 +44,4 @@ body {
 
 span {
 	font-weight: 500;
-}
-
-.github-profile > img {
-	padding-top: 16px;
-	margin-bottom: 16px;
-}
-
-.github-profile .menu:hover {
-	color: #FFA000;
-}
-
-.github-profile .menu:active {
-	color: #FF630D;
-}
-
-#menu-divide {
-	color: #FFFFFF;
-	display: inline;
-	margin: 0;
 }
