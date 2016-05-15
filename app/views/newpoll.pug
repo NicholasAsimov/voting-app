@@ -4,8 +4,7 @@ block append vars
   - pageTitle = 'New Poll'
 
 block append scripts
-  script(type='text/javascript', src='common/ajax-functions.js')
-  script(type='text/javascript', src='controllers/pollController.client.js')
+  script(type='text/javascript', src='controllers/newPollController.client.js')
 
 block content
   h2 Make a new poll
@@ -14,6 +13,6 @@ block content
       label(for='poll-title' ) Title
       input(type='text', class='form-control', id='poll-title')
     .form-group
-      label(for='poll-options') Options (seperated by line)
-      textarea(class='form-control', rows='3')
+      label(for='poll-choices') Choices (seperated by line)
+      textarea(id='poll-choices', class='form-control', rows='3')
     button(type='submit', class='btn btn-default' id='submit-poll') Submit

@@ -6,6 +6,5 @@ block append vars
 block content
   p Select a poll to see the results and vote, or make a #[a(href='/newpoll') new poll]!
   div.list-group
-    a.list-group-item(href='#') What is the best drink
-    a.list-group-item(href='#') Best president
-    a.list-group-item(href='#') Your favorite coding camp
+    each poll in polls
+      a.list-group-item(href='/poll/' + poll._id)= poll.title

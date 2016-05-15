@@ -1,8 +1,5 @@
 const path = process.cwd();
-const ClickHandler = require(`${path}/app/controllers/clickHandler.server.js`);
-const PollHandler = require(`${path}/app/controllers/pollHandler.server.js`);
-const request = require('request');
-const appUrl = process.env.APP_URL;
+const pollHandler = require(`${path}/app/controllers/pollHandler.server.js`);
 
 module.exports = (app, passport) => {
   function isLoggedIn(req, res, next) {
@@ -13,11 +10,18 @@ module.exports = (app, passport) => {
     }
   }
 
-  const clickHandler = new ClickHandler();
-  const pollHandler = new PollHandler();
+  /* Client Routes */
 
   app.route('/').get((req, res) => {
-    res.render('index');
+    pollHandler.getAllPolls().then(polls => {
+      res.render('index', { polls });
+    });
+  });
+
+  app.get('/poll/:id', (req, res) => {
+    pollHandler.getPoll(req.params.id).then(poll => {
+      res.render('poll', { poll });
+    });
   });
 
   app.route('/login').get((req, res) => {
@@ -30,22 +34,16 @@ module.exports = (app, passport) => {
   });
 
   app.route('/profile').get(isLoggedIn, (req, res) => {
-    res.render('profile', {
-      user: req.user.github,
-      polls: pollHandler.getPolls(req.user.github)
+    pollHandler.getPolls(req.user.github.id).then(polls => {
+      res.render('profile', {
+        user: req.user.github,
+        polls
+      });
     });
   });
 
   app.route('/newpoll').get(isLoggedIn, (req, res) => {
     res.render('newpoll');
-  });
-
-  app.route('/clicking').get(isLoggedIn, (req, res) => {
-    res.render('clicking');
-  });
-
-  app.route('/api/user').get(isLoggedIn, (req, res) => {
-    res.json(req.user.github);
   });
 
   app.route('/auth/github').get(passport.authenticate('github'));
@@ -55,12 +53,26 @@ module.exports = (app, passport) => {
     failureRedirect: '/login'
   }));
 
-  // app.route('/api/:id/clicks')
-  //   .get(isLoggedIn, clickHandler.getClicks)
-  //   .post(isLoggedIn, clickHandler.addClick)
-  //   .delete(isLoggedIn, clickHandler.resetClicks);
+  /* API Endpoints */
 
+  // User-specific poll manipulation
   app.route('/api/polls')
-    .get(isLoggedIn, pollHandler.getPolls)
-    .post(isLoggedIn, pollHandler.addPoll);
+    // .get(isLoggedIn, pollHandler.getPolls)
+    .post(isLoggedIn, (req, res) => {
+      pollHandler.addPoll(
+        req.body.title,
+        req.user.github.id,
+        req.body.choices
+      ).then(response => {
+        res.json(response);
+      });
+    });
+
+  // Public all polls
+  // app.get('/api/allpolls', (req, res) => {
+  //   pollHandler.getAllPolls().then(polls => res.json(polls));
+  // });
+
+  // Public specific poll
+  // app.get('/api/poll/:id', pollHandler.getPoll);
 };

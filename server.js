@@ -3,6 +3,7 @@ const routes = require('./app/routes/index.js');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
+const bodyParser = require('body-parser');
 
 const app = express();
 require('dotenv').load();
@@ -16,6 +17,8 @@ app.use('/common', express.static(`${process.cwd()}/app/common`));
 
 app.set('views', './app/views');
 app.set('view engine', 'pug');
+
+app.use(bodyParser.json());
 
 app.use(session({
   secret: 'secretClementine',

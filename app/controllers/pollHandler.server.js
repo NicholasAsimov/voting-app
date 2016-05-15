@@ -1,41 +1,26 @@
 const Users = require('../models/users.js');
 const Polls = require('../models/polls.js');
 
-function PollHandler() {
-  this.getPolls = userId => {
-    console.log('Getting polls...');
-    Polls.find({ author: req.user.github.id }, (err, result) => {
-      if (err) throw err;
+const pollHandler = {
+  // Get user-specific polls
+  getPolls(authorId) {
+    return Polls.find({ author: authorId });
+  },
+  //
+  addPoll(title, authorId, choices) {
+    const poll = { title, author: authorId, choices };
 
-      res.json(result);
-    });
-  };
+    return Polls.create(poll);
+  },
 
-  this.addPoll = (req, res) => {
-    const poll = {
-      title: 'What is the best drink?',
-      author: req.user.github.id,
-      choices: [{ name: 'Coca-Cola', votes: 3 }, { name: 'Sprite', votes: 3 }]
-    };
+  getAllPolls() {
+    return Polls.find({});
+  },
 
-    Polls.create(poll, (err, result) => {
-      if (err) throw err;
+  // Get a single poll by id
+  getPoll(id) {
+    return Polls.findById(id);
+  },
+};
 
-      res.json(result);
-    });
-  };
-
-  this.resetClicks = (req, res) => {
-    Users.findOneAndUpdate({
-      'github.id': req.user.github.id
-    }, { 'nbrClicks.clicks': 0 }).exec((err, result) => {
-      if (err) {
-        throw err;
-      }
-
-      res.json(result.nbrClicks);
-    });
-  };
-}
-
-module.exports = PollHandler;
+module.exports = pollHandler;

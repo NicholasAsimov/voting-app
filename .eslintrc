@@ -5,8 +5,10 @@
     "comma-dangle": "off",
     "no-shadow": "off"
   },
+  "env": {
+    "jquery": true
+  },
   "globals": {
-    "$": 1,
     "appUrl": 1
   }
 }

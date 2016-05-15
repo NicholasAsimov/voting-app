@@ -3,10 +3,6 @@ extends layout
 block append vars
   - pageTitle = 'Profile'
 
-block append scripts
-  //-script(type='text/javascript', src='common/ajax-functions.js')
-  //-script(type='text/javascript', src='controllers/userController.client.js')
-
 block content
   .profile.text-center
     .github-profile
@@ -23,5 +19,10 @@ block content
       p
         span Repositories:
         span#profile-repos.profile-value #{user.publicRepos}
+        
+    .user-polls
+      h3 Your polls
+      each poll in polls
+        a.list-group-item(href='/poll/' + poll._id)= poll.title
 
     a(href='/logout').btn.btn-default Logout

@@ -1,0 +1,10 @@
+extends layout
+
+block append vars
+  - pageTitle = 'Home'
+
+block content
+  p= poll.title
+  div
+    each choice in poll.choices
+      p= 'Name: ' + choice.name + ' Votes: ' + choice.votes
