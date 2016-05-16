@@ -20,9 +20,18 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
+h1 {
+  font-size: 40px !important;
+}
+
 .jumbotron h1,
-.jumbotron p {
+.jumbotron h3 {
   text-align: center;
+}
+
+.poll-chart {
+  width: 250px;
+  height: 250px;
 }
 
 /****** Profile Styling ******/

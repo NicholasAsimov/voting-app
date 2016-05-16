@@ -2,11 +2,11 @@
   const appUrl = window.location.origin;
   const apiUrl = `${appUrl}/api/polls`;
 
-  $('#submit-poll').click(e => {
+  $('#poll-form').submit(e => {
     e.preventDefault();
 
-    const title = document.getElementById('poll-title').value;
-    const choices = document.getElementById('poll-choices').value;
+    const title = $('#poll-title').val();
+    const choices = $('#poll-choices').val();
 
     const poll = {
       title,

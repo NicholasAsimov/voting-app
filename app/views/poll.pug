@@ -4,7 +4,39 @@ block append vars
   - pageTitle = 'Home'
 
 block content
-  p= poll.title
-  div
-    each choice in poll.choices
-      p= 'Name: ' + choice.name + ' Votes: ' + choice.votes
+  div(id='poll-id', data-poll-id=poll._id, style={ display: 'none' })
+  h3= poll.title
+  div.row
+    .col-xs-6
+      form
+        .form-group
+          label(for='choiceSelect') I want to vote for:
+          select.form-control#choice-select
+            each choice in poll.choices
+              option= choice.name
+        button(type='submit', id='submit-vote', class='btn btn-primary') Vote!
+    .col-xs-6
+      .poll-chart
+        canvas(id='pollChart', width='300', height='300')
+
+block append scripts
+  script(src='/controllers/pollController.client.js')
+  script(src='/public/lib/Chart.js/dist/Chart.js')
+  script.
+      var randomColor = function() {
+        return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+      };
+
+    var poll = !{JSON.stringify(poll)}
+    var ctx = document.getElementById('pollChart');
+    var pollChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: poll.choices.reduce((a, b) => a.concat([b.name]), []),
+        datasets: [{
+          label: '# of Votes',
+          data: poll.choices.reduce((a, b) => a.concat([b.votes]), []),
+          backgroundColor: poll.choices.reduce((a, b) => a.concat([randomColor()]), []),
+        }]
+      }
+    });

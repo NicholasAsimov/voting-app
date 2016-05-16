@@ -1,4 +1,3 @@
-const Users = require('../models/users.js');
 const Polls = require('../models/polls.js');
 
 const pollHandler = {
@@ -6,7 +5,7 @@ const pollHandler = {
   getPolls(authorId) {
     return Polls.find({ author: authorId });
   },
-  //
+
   addPoll(title, authorId, choices) {
     const poll = { title, author: authorId, choices };
 
@@ -14,13 +13,20 @@ const pollHandler = {
   },
 
   getAllPolls() {
-    return Polls.find({});
+    return Polls.find({}).sort('-dateAdded');
   },
 
   // Get a single poll by id
   getPoll(id) {
     return Polls.findById(id);
   },
+
+  vote(id, choice) {
+    const query = { _id: id, 'choices.name': choice };
+    const update = { $inc: { 'choices.$.votes': 1 } };
+
+    return Polls.findOneAndUpdate(query, update);
+  }
 };
 
 module.exports = pollHandler;

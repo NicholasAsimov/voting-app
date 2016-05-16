@@ -29,6 +29,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  res.locals.loggedIn = !!req.user;
+
+  next();
+});
+
 routes(app, passport);
 
 const port = process.env.PORT || 8080;

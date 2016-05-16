@@ -74,5 +74,12 @@ module.exports = (app, passport) => {
   // });
 
   // Public specific poll
-  // app.get('/api/poll/:id', pollHandler.getPoll);
+  app.route('/api/poll')
+    .post((req, res) => {
+      pollHandler.vote(req.body.pollId, req.body.choice).then(result => {
+        res.json(result);
+      });
+
+      // pollHandler.vote(req.body.pollId, req.body.choice);
+    });
 };

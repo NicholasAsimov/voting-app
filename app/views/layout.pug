@@ -21,10 +21,14 @@ body
         ul.nav.navbar-nav.navbar-right
           li.active
             a(href='/') Home
-          li
-            a(href='/profile') Profile
-          li
-            a(href='/newpoll') New Poll
+          if loggedIn
+            li
+              a(href='/profile') Profile
+            li
+              a(href='/newpoll') New Poll
+          else
+            li
+              a(href='/login') Login
 
   .container
     .jumbotron
