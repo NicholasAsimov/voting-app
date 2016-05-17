@@ -4,7 +4,7 @@ block content
   div(id='poll-id', data-poll-id=poll.id, style={ display: 'none' })
   h3= poll.title
   div.row
-    .col-xs-6
+    .col-xs-5
       form#vote-form
         .form-group
           label(for='choiceSelect') I want to vote for:
@@ -18,13 +18,18 @@ block content
             label(for='input-custom') Your choice:
             input(type='text', class='form-control', id='input-custom')
         button(type='submit', id='submit-vote', class='btn btn-primary') Vote!
-    .col-xs-6
+        br
+        br
+        a(href='https://twitter.com/intent/tweet?text=' + poll.title + ' - Voting App&url=http://wannavote.herokuapp.com/poll/' + poll.id).btn.btn-social.btn-twitter
+          span.fa.fa-twitter
+          span Share with friends
+    .col-xs-7
       .poll-chart
         canvas(id='pollChart', width='300', height='300')
 
 block append scripts
   script(src='/controllers/pollController.client.js')
-  script(src='/public/lib/Chart.js/dist/Chart.js')
+  script(src='/public/lib/Chart.js/dist/Chart.min.js')
   script.
       var randomColor = function() {
         return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
@@ -41,5 +46,9 @@ block append scripts
           data: poll.choices.reduce((a, b) => a.concat([b.votes]), []),
           backgroundColor: poll.choices.reduce((a, b) => a.concat([randomColor()]), []),
         }]
+      },
+      options: {
+        responsive: false,
+        maintainAspectRatio: false
       }
     });
