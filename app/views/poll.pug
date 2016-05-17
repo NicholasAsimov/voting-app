@@ -1,19 +1,22 @@
 extends layout
 
-block append vars
-  - pageTitle = 'Home'
-
 block content
-  div(id='poll-id', data-poll-id=poll._id, style={ display: 'none' })
+  div(id='poll-id', data-poll-id=poll.id, style={ display: 'none' })
   h3= poll.title
   div.row
     .col-xs-6
-      form
+      form#vote-form
         .form-group
           label(for='choiceSelect') I want to vote for:
           select.form-control#choice-select
             each choice in poll.choices
               option= choice.name
+            if loggedIn
+              option(id='choice-custom') I want my own choice
+        if loggedIn
+          .form-group#custom-form
+            label(for='input-custom') Your choice:
+            input(type='text', class='form-control', id='input-custom')
         button(type='submit', id='submit-vote', class='btn btn-primary') Vote!
     .col-xs-6
       .poll-chart

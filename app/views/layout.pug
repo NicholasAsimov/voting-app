@@ -1,11 +1,9 @@
 doctype
 head
-  block vars
-    - var defaultTitle = 'Voting App'
-    - var pageTitle = pageTitle
-  title #{pageTitle} | #{defaultTitle}
+  title= title + ' | Voting App'
 
   link(rel='stylesheet', href='/public/lib/bootstrap/dist/css/bootstrap.min.css')
+  link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Roboto:300,400,500')
   link(rel='stylesheet', href='/public/css/main.css')
 body
   nav.navbar.navbar-default
@@ -19,20 +17,33 @@ body
         a.navbar-brand(href='/') Wanna Vote?
       .collapse.navbar-collapse#my-navbar
         ul.nav.navbar-nav.navbar-right
-          li.active
-            a(href='/') Home
-          if loggedIn
-            li
-              a(href='/profile') Profile
-            li
-              a(href='/newpoll') New Poll
-          else
-            li
-              a(href='/login') Login
+          -
+            var menuShared = [{ title: 'Home', url: '/' }];
+
+            var menuUser = [
+              { title: 'New Poll', url: '/newpoll' },
+              { title: 'Profile', url: '/profile' },
+              { title: 'Logout', url: '/logout' }
+            ];
+
+            var menuGuest = [
+              { title: 'Login', url: '/login' },
+            ];
+
+            var menuCombined;
+
+            if (loggedIn) {
+              menuCombined = menuShared.concat(menuUser);
+            } else {
+              menuCombined = menuShared.concat(menuGuest);
+            }
+
+          each item in menuCombined
+            li(class=(path == item.url) ? 'active' : '')
+              a(href=item.url)= item.title
 
   .container
     .jumbotron
-      h1 Voting App
       block content
 
   block scripts

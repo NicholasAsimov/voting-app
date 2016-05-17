@@ -1,16 +1,18 @@
 (function () {
-  const appUrl = window.location.origin;
-  const apiUrl = `${appUrl}/api/polls`;
+  var appUrl = window.location.origin;
+  var apiUrl = appUrl + '/api/polls';
 
-  $('#poll-form').submit(e => {
+  $('#poll-form').submit(function(e) {
     e.preventDefault();
 
-    const title = $('#poll-title').val();
-    const choices = $('#poll-choices').val();
+    var title = $('#poll-title').val();
+    var choices = $('#poll-choices').val();
 
-    const poll = {
+    var poll = {
       title,
-      choices: choices.split('\n').map(choice => ({ name: choice, votes: 0 }))
+      choices: choices.split('\n').map(function(choice) {
+        return { name: choice, votes: 0 }
+      })
     };
 
     $.ajax({
@@ -18,7 +20,7 @@
       url: apiUrl,
       data: JSON.stringify(poll),
       contentType: 'application/json'
-    }).always(() => {
+    }).always(function() {
       window.location.replace(appUrl);
     });
   });

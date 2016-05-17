@@ -1,9 +1,7 @@
 extends layout
 
-block append vars
-  - pageTitle = 'Home'
-
 block content
+  h2.text-center Public polls
   p Select a poll to see the results and vote, or make a #[a(href='/newpoll') new poll]!
   div.list-group
     each poll in polls

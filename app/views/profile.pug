@@ -1,28 +1,20 @@
 extends layout
 
-block append vars
-  - pageTitle = 'Profile'
-
 block content
-  .profile.text-center
-    .github-profile
-      h3 Your Github profile
-      p
-        span ID:
-        span#profile-id.profile-value #{user.id}
-      p
-        span Username:
-        span#profile-username.profile-value #{user.username}
-      p
-        span Display Name:
-        span#display-name.profile-value #{user.displayName}
-      p
-        span Repositories:
-        span#profile-repos.profile-value #{user.publicRepos}
-        
+  .profile
+    p.text-center Hello, #{user.displayName}
+    hr
     .user-polls
-      h3 Your polls
-      each poll in polls
-        a.list-group-item(href='/poll/' + poll._id)= poll.title
+      h3.text-center Your polls
+      .panel-group
+        each poll in polls
+          .panel.panel-default
+            .panel-body
+              a(href='/poll/' + poll.id)= poll.title
+              button(title='Delete poll', data-poll-id=poll.id).btn.btn-xs.btn-warning.pull-right.btn-delete
+                span.glyphicon.glyphicon-trash
 
     a(href='/logout').btn.btn-default Logout
+
+block append scripts
+  script(src='/controllers/profileController.client.js')

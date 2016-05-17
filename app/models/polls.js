@@ -5,7 +5,7 @@ const Poll = new Schema({
   title: String,
   author: String, // Github id
   dateAdded: { type: Date, default: Date.now },
-  choices: [{ name: String, votes: Number }]
+  choices: [{ name: String, votes: Number, _id: false }]
 });
 
 module.exports = mongoose.model('Poll', Poll);

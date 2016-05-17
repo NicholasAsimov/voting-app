@@ -1,22 +1,33 @@
 (function () {
-  const appUrl = window.location.origin;
-  const pollId = $('#poll-id').data('poll-id');
-  const apiUrl = `${appUrl}/api/poll`;
+  $('#custom-form').hide();
 
-  $('#submit-vote').click(e => {
+  var appUrl = window.location.origin;
+  var pollId = $('#poll-id').data('poll-id');
+  var apiUrl = appUrl + '/api/poll';
+
+  $('#choice-select').change(function() {
+    var selectedId = $(this).children(':selected').attr('id');
+
+    if (selectedId == 'choice-custom') {
+      $('#custom-form').show();
+      $('#input-custom').prop('required', true)
+    } else {
+      $('#custom-form').hide();
+      $('#input-custom').removeAttr('required')
+    }
+  })
+
+  $('#vote-form').submit(function(e) {
     e.preventDefault();
-    const choice = $('#choice-select').val();
-    const data = {
-      pollId: pollId.slice(1, pollId.length - 1), // Removing double-double quotes
-      choice
-    };
+    var choice = $('#input-custom').val() || $('#choice-select').val();
+    var data = { pollId, choice };
 
     $.ajax({
       type: 'POST',
       url: apiUrl,
       data: JSON.stringify(data),
       contentType: 'application/json'
-    }).always(() => {
+    }).always(function() {
       window.location.reload();
     });
   });

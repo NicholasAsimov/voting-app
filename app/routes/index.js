@@ -12,39 +12,44 @@ module.exports = (app, passport) => {
 
   /* Client Routes */
 
-  app.route('/').get((req, res) => {
+  app.get('/', (req, res) => {
     pollHandler.getAllPolls().then(polls => {
-      res.render('index', { polls });
+      res.render('index', { title: 'Home', polls });
     });
   });
 
   app.get('/poll/:id', (req, res) => {
     pollHandler.getPoll(req.params.id).then(poll => {
-      res.render('poll', { poll });
+      res.render('poll', { title: poll.title, poll });
+    }, () => {
+      res.redirect('/404');
     });
   });
 
-  app.route('/login').get((req, res) => {
-    res.render('login');
+  app.get('/login', (req, res) => {
+    res.render('login', { title: 'Login' });
   });
 
-  app.route('/logout').get((req, res) => {
+  app.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/login');
+    res.redirect('/');
   });
 
-  app.route('/profile').get(isLoggedIn, (req, res) => {
+  app.get('/profile', isLoggedIn, (req, res) => {
     pollHandler.getPolls(req.user.github.id).then(polls => {
       res.render('profile', {
+        title: 'Profile',
         user: req.user.github,
         polls
       });
     });
   });
 
-  app.route('/newpoll').get(isLoggedIn, (req, res) => {
-    res.render('newpoll');
+  app.get('/newpoll', isLoggedIn, (req, res) => {
+    res.render('newpoll', { title: 'New Poll' });
   });
+
+  /* Authentication */
 
   app.route('/auth/github').get(passport.authenticate('github'));
 
@@ -73,13 +78,22 @@ module.exports = (app, passport) => {
   //   pollHandler.getAllPolls().then(polls => res.json(polls));
   // });
 
-  // Public specific poll
+  // Specific poll manipulation
   app.route('/api/poll')
+    // ::public:: Get poll by id
     .post((req, res) => {
       pollHandler.vote(req.body.pollId, req.body.choice).then(result => {
         res.json(result);
       });
-
-      // pollHandler.vote(req.body.pollId, req.body.choice);
+    })
+    // ::private:: Remove poll by id
+    .delete(isLoggedIn, (req, res) => {
+      pollHandler.getPoll(req.body.pollId).then(poll => {
+        if (req.user.github.id === poll.author) {
+          pollHandler.remove(req.body.pollId).then(result => {
+            res.json(result);
+          });
+        }
+      });
     });
 };

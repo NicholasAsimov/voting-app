@@ -29,13 +29,21 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Adds local variables for jade templates
 app.use((req, res, next) => {
-  res.locals.loggedIn = !!req.user;
+  res.locals = {
+    loggedIn: req.isAuthenticated(),
+    path: req.path
+  };
 
   next();
 });
 
 routes(app, passport);
+
+app.use((req, res) => {
+  res.render('404', { title: 'Page not found' });
+});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
