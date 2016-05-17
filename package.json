@@ -16,12 +16,11 @@
     "Express",
     "Node",
     "javascript",
-    "boilerplate"
   ],
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "bower install"
   },
-  "postinstall": "bower install",
   "author": "Nicholas Asimov",
   "license": "MIT",
   "dependencies": {
