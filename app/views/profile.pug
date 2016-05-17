@@ -2,11 +2,11 @@ extends layout
 
 block content
   .profile
-    p.text-center Hello, #{user.displayName}
+    p Hello, #{user.displayName}
     hr
     .user-polls
-      h3.text-center Your polls
-      .panel-group
+      h3 Your polls
+      .panel-group.text-left
         each poll in polls
           .panel.panel-default
             .panel-body
