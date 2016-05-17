@@ -24,7 +24,7 @@ app.set('view engine', 'pug');
 app.use(bodyParser.json());
 
 app.use(session({
-  secret: 'secretClementine',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));

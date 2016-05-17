@@ -21,10 +21,12 @@
   "scripts": {
     "start": "node server.js"
   },
+  "postinstall": "bower install",
   "author": "Nicholas Asimov",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "bower": "^3.9.0",
     "dotenv": "^1.2.0",
     "express": "^4.12.4",
     "express-session": "^1.11.3",
