@@ -22,10 +22,10 @@ const pollHandler = {
     return Polls.findById(id);
   },
 
-  vote(id, choice) {
+  vote(id, choice, userIdentificator) {
     // Update existing choice
     const query = { _id: id, 'choices.name': choice };
-    const update = { $inc: { 'choices.$.votes': 1 } };
+    const update = { $inc: { 'choices.$.votes': 1 }, $addToSet: { votedUsers: userIdentificator } };
 
     // Add custom choice
     const queryCustom = { _id: id, 'choices.name': { $ne: choice } };

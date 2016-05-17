@@ -27,8 +27,12 @@
       url: apiUrl,
       data: JSON.stringify(data),
       contentType: 'application/json'
-    }).always(function() {
-      window.location.reload();
-    });
+    }).then(function(result) {
+      if (Object.keys(result)[0] == 'error') {
+        window.alert('You have already voted!');
+      } else {
+        window.location.reload();
+      }
+    })
   });
 }());

@@ -80,10 +80,17 @@ module.exports = (app, passport) => {
 
   // Specific poll manipulation
   app.route('/api/poll')
-    // ::public:: Get poll by id
     .post((req, res) => {
-      pollHandler.vote(req.body.pollId, req.body.choice).then(result => {
-        res.json(result);
+      pollHandler.getPoll(req.body.pollId).then(poll => {
+        const userIdentificator = req.isAuthenticated() ? req.user.github.id : req.ip;
+
+        if (poll.votedUsers.indexOf(userIdentificator) === -1) {
+          pollHandler.vote(req.body.pollId, req.body.choice, userIdentificator).then(result => {
+            res.json(result);
+          });
+        } else {
+          res.json({ error: 'User already voted' });
+        }
       });
     })
     // ::private:: Remove poll by id

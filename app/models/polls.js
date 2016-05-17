@@ -5,6 +5,7 @@ const Poll = new Schema({
   title: String,
   author: String, // Github id
   dateAdded: { type: Date, default: Date.now },
+  votedUsers: [],
   choices: [{ name: String, votes: Number, _id: false }]
 });
 

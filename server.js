@@ -9,6 +9,9 @@ const app = express();
 require('dotenv').load();
 require('./app/config/passport')(passport);
 
+// Enable user IP detection
+app.enable('trust proxy');
+
 mongoose.connect(process.env.MONGODB_URI);
 
 app.use('/controllers', express.static(`${process.cwd()}/app/controllers`));
