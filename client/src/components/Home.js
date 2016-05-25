@@ -1,12 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
 
 class Home extends React.Component {
-  componentWillMount() {
-    this.props.getPolls();
-  }
-
   render() {
     return (
       <div>
@@ -22,4 +17,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actions)(Home);
+export default connect(mapStateToProps)(Home);
