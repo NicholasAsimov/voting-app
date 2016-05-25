@@ -51,13 +51,14 @@ export function signoutUser() {
   return { type: types.UNAUTH_USER };
 }
 
-export function fetchMessage() {
+export function getPolls() {
   return dispatch => {
-    axios.get(API_URL, {
-      headers: { authorization: localStorage.getItem('token') }
-    })
+    axios.get(`${API_URL}/api/polls`)
       .then(response => {
-        console.log(response);
+        dispatch({
+          type: types.GET_POLLS,
+          payload: response.data
+        });
       });
   };
 }
