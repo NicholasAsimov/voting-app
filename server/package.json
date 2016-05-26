@@ -1,12 +1,12 @@
 {
-  "name": "server-auth-boilerplate",
+  "name": "voting-app-server",
   "version": "1.0.0",
   "description": "Token-based authentication server boilerplate",
   "repository": "https://github.com/NicholasAsimov/server-auth-boilerplate.git",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Nicholas Asimov <nicholas@asimov.me> (http://nicholasasimov.com)",

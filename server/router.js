@@ -19,6 +19,13 @@ module.exports = app => {
         // .catch(res.json({ error: 'Couldn\'t get polls' }))
     })
 
+  app.route('/api/poll')
+    .post((req, res) => {
+      pollHandler.vote(req.body.id, req.body.choice, req.ip).then(response => {
+        res.json(response);
+      })
+    })
+
   app.post('/signin', requireSignin, Authentication.signin)
   app.post('/signup', Authentication.signup);
 };

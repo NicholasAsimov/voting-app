@@ -1,4 +1,6 @@
 module.exports = {
+  devtool: 'eval',
+
   entry: [
     './src/index.js'
   ],

@@ -1,5 +1,7 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import * as actions from '../../actions';
 
 class Signin extends React.Component {
@@ -22,19 +24,41 @@ class Signin extends React.Component {
 
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-        <fieldset className="form-group">
-          <label>Email:</label>
-          <input type="email" className="form-control" {...email} />
-        </fieldset>
-        <fieldset className="form-group">
-          <label>Password:</label>
-          <input type="password" className="form-control" {...password} />
-        </fieldset>
-        {this.renderAlert()}
-        <button action="submit" className="btn btn-primary">Sign In</button>
+        <TextField
+          hintText="test@xample.com"
+          floatingLabelText="Email"
+          errorText={email.touched && email.error}
+          {...email}
+        /><br />
+        <TextField
+          hintText="Password Field"
+          floatingLabelText="Password"
+          errorText={password.touched && password.error}
+          type="password"
+          {...password}
+        /><br />
+      {this.renderAlert()}
+      <RaisedButton label="Sign In" primary={true} type="submit" />
       </form>
     );
   }
+}
+
+function validate(values) {
+  const errors = {};
+  const requiredFields = ['email', 'password'];
+
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Required'
+    }
+  });
+
+  if (values.email && !/[^\s@]+@[^\s@]+\.[^\s@]+/.test(values.email)) {
+    errors.email = 'Invalid email address';
+  }
+
+  return errors;
 }
 
 function mapStateToProps(state) {
@@ -45,5 +69,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'signin',
-  fields: ['email', 'password']
+  fields: ['email', 'password'],
+  validate
 }, mapStateToProps, actions)(Signin);

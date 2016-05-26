@@ -32,7 +32,7 @@ const pollHandler = {
     const updateCustom = { $push: { choices: { name: choice, votes: 0 } } };
 
     return Poll.findOneAndUpdate(queryCustom, updateCustom).then(() => (
-           Poll.findOneAndUpdate(query, update)
+           Poll.findOneAndUpdate(query, update, { new: true })
     ));
 
     // Poll.findOneAndUpdate(queryCustom, updateCustom, (err, result) => {

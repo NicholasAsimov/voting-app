@@ -62,3 +62,15 @@ export function getPolls() {
       });
   };
 }
+
+export function vote(id, choice) {
+  return dispatch => {
+    axios.post(`${API_URL}/api/poll`, { id, choice })
+      .then(response => {
+        dispatch({
+          type: types.VOTE,
+          payload: response.data
+        });
+      })
+  };
+}

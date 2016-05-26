@@ -4,19 +4,35 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import reduxThunk from 'redux-thunk';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import RequireAuth from './components/auth/RequireAuth';
 
 import App from './components/App';
-import Home from './components/Home'
+import Polls from './components/Polls'
+import Poll from './components/Poll';
+import Feature from './components/Feature';
+
 import Signin from './components/auth/Signin';
 import Signout from './components/auth/Signout';
 import Signup from './components/auth/Signup';
-import Feature from './components/Feature';
+
 
 import reducers from './reducers';
 import { AUTH_USER } from './constants/ActionTypes';
 import { getPolls } from './actions';
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
+
+const muiTheme = getMuiTheme({
+  appBar: {
+    height: 56, // Instead of 64
+  },
+});
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -32,15 +48,18 @@ store.dispatch(getPolls());
 
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <IndexRoute component={Home} />
-        <Route path="/signin" component={Signin} />
-        <Route path="/signout" component={Signout} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/feature" component={RequireAuth(Feature)} />
-      </Route>
-    </Router>
-  </Provider>
-  , document.querySelector('.container'));
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <Provider store={store}>
+      <Router history={browserHistory}>
+        <Route path="/" component={App}>
+          <IndexRoute component={Polls} />
+          <Route path="/signin" component={Signin} />
+          <Route path="/signout" component={Signout} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/feature" component={RequireAuth(Feature)} />
+          <Route path="/poll/:id" component={Poll} />
+        </Route>
+      </Router>
+    </Provider>
+  </MuiThemeProvider>
+  , document.getElementById('root'));
