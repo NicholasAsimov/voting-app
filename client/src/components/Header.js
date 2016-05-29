@@ -24,17 +24,12 @@ class Header extends React.Component {
   renderMenuItems() {
     const sharedItems = [{ name: 'Home', route: '/' }];
     const authItems = [
-      {
-        name: 'Sign Out', route: '/signout'
-      }
+      { name: 'Profile', route: '/profile' },
+      { name: 'Sign Out', route: '/signout' }
     ];
     const guestItems = [
-      {
-        name: 'Sign In', route: '/signin'
-      },
-      {
-        name: 'Sign Up', route: '/signup'
-      }
+      { name: 'Sign In', route: '/signin' },
+      { name: 'Sign Up', route: '/signup' }
     ];
 
     let combinedItems;

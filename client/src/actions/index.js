@@ -4,44 +4,31 @@ import * as types from '../constants/ActionTypes';
 
 const API_URL = 'http://localhost:3090';
 
+function authUser(dispatch, api_endpoint, email, password) {
+  axios.post(`${API_URL}/${api_endpoint}`, { email, password })
+    .then(response => {
+      dispatch({ type: types.AUTH_USER });
+      localStorage.setItem('token', response.data.token);
+      browserHistory.push('/profile');
+    })
+    .catch(response => {
+      if (api_endpoint == 'signin') {
+        dispatch(authError('Wrong email or password'));
+      } else {
+        dispatch(authError(response.data.error));
+      }
+    });
+}
+
 export function signinUser({ email, password }) {
   return dispatch => {
-    // Submit email/password to the server
-    axios.post(`${API_URL}/signin`, { email, password })
-      .then(response => {
-        // If request is good...
-        // - Update state to indicate user is authenticated
-        dispatch({ type: types.AUTH_USER });
-        // - Save the JWT token
-        localStorage.setItem('token', response.data.token);
-        // - redirect to route '/feature'
-        browserHistory.push('/feature');
-      })
-      .catch(() => {
-        // If request is bad...
-        // - Show an error to the user
-        dispatch(authError('Bad Login Info'));
-      });
+    authUser(dispatch, 'signin', email, password);
   };
 }
 
 export function signupUser({ email, password }) {
   return dispatch => {
-    // Submit email/password to the server
-    axios.post(`${API_URL}/signup`, { email, password })
-      .then(response => {
-        dispatch({ type: types.AUTH_USER });
-        localStorage.setItem('token', response.data.token);
-        browserHistory.push('/feature');
-      })
-      .catch(response => dispatch(authError(response.data.error)));
-  };
-}
-
-export function authError(error) {
-  return {
-    type: types.AUTH_ERROR,
-    payload: error
+    authUser(dispatch, 'signup', email, password);
   };
 }
 
@@ -49,6 +36,13 @@ export function signoutUser() {
   localStorage.removeItem('token');
 
   return { type: types.UNAUTH_USER };
+}
+
+export function authError(error) {
+  return {
+    type: types.AUTH_ERROR,
+    payload: error
+  };
 }
 
 export function getPolls() {
@@ -72,5 +66,21 @@ export function vote(id, choice) {
           payload: response.data
         });
       })
+      // User already voted
+      .catch(response => window.alert('You already voted'))
+  };
+}
+
+export function getUserInfo() {
+  return dispatch => {
+    axios.get(`${API_URL}/api/user`, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(response => {
+        dispatch({
+          type: types.GET_USER_INFO,
+          payload: response.data
+        });
+      });
   };
 }

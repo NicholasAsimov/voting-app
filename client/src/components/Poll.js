@@ -20,7 +20,7 @@ class Poll extends React.Component {
   handleChange = (event, index, value) => this.setState({ value });
 
   handleVote = () => {
-    this.props.vote(this.props.poll._id, this.state.value)
+    this.props.vote(this.props.poll._id, this.state.value);
   };
 
   renderChart(poll) {
@@ -50,7 +50,6 @@ class Poll extends React.Component {
 
   render() {
     const poll = this.props.poll;
-    console.log(this.state.value);
     return (
       <Card>
         <CardHeader

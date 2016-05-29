@@ -21,10 +21,20 @@ module.exports = app => {
 
   app.route('/api/poll')
     .post((req, res) => {
-      pollHandler.vote(req.body.id, req.body.choice, req.ip).then(response => {
-        res.json(response);
-      })
+      pollHandler.getPoll(req.body.id).then(poll => {
+        if (poll.votedUsers.indexOf(req.ip) != -1) {
+          res.status(409).json({ error: 'User already voted' });
+        }
+
+        pollHandler.vote(req.body.id, req.body.choice, req.ip).then(response => {
+          res.json(response);
+        });
     })
+  });
+
+  app.get('/api/user', requireAuth, (req, res) => {
+    res.json({ email: req.user.email });
+  })
 
   app.post('/signin', requireSignin, Authentication.signin)
   app.post('/signup', Authentication.signup);

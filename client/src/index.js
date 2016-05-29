@@ -12,8 +12,7 @@ import RequireAuth from './components/auth/RequireAuth';
 
 import App from './components/App';
 import Polls from './components/Polls'
-import Poll from './components/Poll';
-import Feature from './components/Feature';
+import Profile from './components/Profile';
 
 import Signin from './components/auth/Signin';
 import Signout from './components/auth/Signout';
@@ -46,7 +45,6 @@ if (token) {
 // Populate store with polls
 store.dispatch(getPolls());
 
-
 ReactDOM.render(
   <MuiThemeProvider muiTheme={muiTheme}>
     <Provider store={store}>
@@ -56,8 +54,7 @@ ReactDOM.render(
           <Route path="/signin" component={Signin} />
           <Route path="/signout" component={Signout} />
           <Route path="/signup" component={Signup} />
-          <Route path="/feature" component={RequireAuth(Feature)} />
-          <Route path="/poll/:id" component={Poll} />
+          <Route path="/profile" component={RequireAuth(Profile)} />
         </Route>
       </Router>
     </Provider>
