@@ -1,29 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
-import Paper from 'material-ui/Paper';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-
-const style = {
-  display: 'inline-block',
-  margin: '16px 32px 16px 0'
-};
+import { IndexLink } from 'react-router';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 
 class Header extends React.Component {
-  state = {
-    open: false
-  };
-
-  handleToggle = () => this.setState({ open: !this.state.open });
-
-  handleClose = () => this.setState({ open: false });
-
   renderMenuItems() {
-    const sharedItems = [{ name: 'Home', route: '/' }];
+    const authenticated = this.props.authenticated;
+
+    const sharedItems = [{ name: 'Home', route: '/', index: true }];
     const authItems = [
+      { name: 'New Poll', route: '/newpoll' },
       { name: 'Profile', route: '/profile' },
       { name: 'Sign Out', route: '/signout' }
     ];
@@ -32,22 +20,16 @@ class Header extends React.Component {
       { name: 'Sign Up', route: '/signup' }
     ];
 
-    let combinedItems;
-
-    if (this.props.authenticated) {
-      combinedItems = sharedItems.concat(authItems);
-    } else {
-      combinedItems = sharedItems.concat(guestItems);
-    }
+    const combinedItems = sharedItems.concat(authenticated ? authItems : guestItems);
 
     const menuItems = combinedItems.map((item, index) => (
-      <MenuItem
-        linkButton
-        containerElement={<Link to={item.route} />}
-        onTouchTap={this.handleClose}
-        primaryText={item.name}
-        key={index}
-      />
+      item.index ?
+      <IndexLinkContainer to={item.route} key={index}>
+        <NavItem>{item.name}</NavItem>
+      </IndexLinkContainer> :
+      <LinkContainer to={item.route} key={index}>
+        <NavItem>{item.name}</NavItem>
+      </LinkContainer>
     ));
 
     return menuItems;
@@ -55,21 +37,19 @@ class Header extends React.Component {
 
   render() {
     return (
-      <div>
-        <AppBar
-          title="Wanna Vote?"
-          iconClassNameRight="muidocs-icon-navigation-expand-more"
-          onLeftIconButtonTouchTap={this.handleToggle}
-        />
-      <Drawer
-        docked={false}
-        width={200}
-        open={this.state.open}
-        onRequestChange={(open) => this.setState({ open })}
-      >
-        {this.renderMenuItems()}
-      </Drawer>
-    </div>
+      <Navbar fluid>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <IndexLink to="/">Wanna Vote?</IndexLink>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav pullRight>
+            {this.renderMenuItems()}
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
@@ -78,4 +58,4 @@ function mapStateToProps(state) {
   return { authenticated: state.auth.authenticated };
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, null, null, { pure: false })(Header);

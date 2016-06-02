@@ -1,7 +1,5 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import * as actions from '../../actions';
 
 class Signin extends React.Component {
@@ -24,21 +22,18 @@ class Signin extends React.Component {
 
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-        <TextField
-          hintText="test@xample.com"
-          floatingLabelText="Email"
-          errorText={email.touched && email.error}
-          {...email}
-        /><br />
-        <TextField
-          hintText="Password Field"
-          floatingLabelText="Password"
-          errorText={password.touched && password.error}
-          type="password"
-          {...password}
-        /><br />
-      {this.renderAlert()}
-      <RaisedButton label="Sign In" primary={true} type="submit" />
+        <fieldset className="form-group">
+          <label>Email:</label>
+          <input type="email" className="form-control" {...email} />
+          {email.touched && email.error && <div className="error">{email.error}</div>}
+         </fieldset>
+        <fieldset className="form-group">
+          <label>Password:</label>
+          <input type="password" className="form-control" {...password} />
+          {password.touched && password.error && <div className="error">{password.error}</div>}
+        </fieldset>
+        {this.renderAlert()}
+        <button action="submit" className="btn btn-primary">Sign In</button>
       </form>
     );
   }
@@ -49,7 +44,7 @@ function validate(values) {
   const requiredFields = ['email', 'password'];
 
   requiredFields.forEach(field => {
-    if (!values[field]) {
+    if (!values[field] || values[field].trim() == '') {
       errors[field] = 'Required'
     }
   });

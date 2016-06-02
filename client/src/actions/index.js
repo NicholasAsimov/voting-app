@@ -57,7 +57,7 @@ export function getPolls() {
   };
 }
 
-export function vote(id, choice) {
+export function vote({ id, choice }) {
   return dispatch => {
     axios.post(`${API_URL}/api/poll`, { id, choice })
       .then(response => {
@@ -79,6 +79,34 @@ export function getUserInfo() {
       .then(response => {
         dispatch({
           type: types.GET_USER_INFO,
+          payload: response.data
+        });
+      });
+  };
+}
+
+export function removePoll({ id, authorEmail }) {
+  return dispatch => {
+    axios.post(`${API_URL}/api/poll/delete`, { id, authorEmail }, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(response => {
+        dispatch({
+          type: types.REMOVE_POLL,
+          payload: id
+        });
+      });
+  };
+}
+
+export function addPoll({ title, choices }) {
+  return dispatch => {
+    axios.post(`${API_URL}/api/polls`, { title, choices }, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(response => {
+        dispatch({
+          type: types.ADD_POLL,
           payload: response.data
         });
       });

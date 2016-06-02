@@ -1,8 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import * as actions from '../../actions';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 
 class Signup extends React.Component {
   handleFormSubmit = (formProps) => {
@@ -24,28 +22,23 @@ class Signup extends React.Component {
 
     return (
       <form onSubmit={handleSubmit(this.props.signupUser)}>
-        <TextField
-          hintText="test@xample.com"
-          floatingLabelText="Email"
-          errorText={email.touched && email.error}
-          {...email}
-        /><br />
-        <TextField
-          hintText="Password Field"
-          floatingLabelText="Password"
-          errorText={password.touched && password.error}
-          type="password"
-          {...password}
-        /><br />
-        <TextField
-          hintText="Confirm Password"
-          floatingLabelText="Confirm Password"
-          errorText={passwordConfirm.touched && passwordConfirm.error}
-          type="password"
-          {...passwordConfirm}
-        /><br />
-        {this.renderAlert()}
-        <RaisedButton label="Sign Up" primary={true} type="submit" />
+        <fieldset className="form-group">
+          <label>Email:</label>
+          <input className="form-control" {...email} />
+          {email.touched && email.error && <div className="error">{email.error}</div>}
+        </fieldset>
+         <fieldset className="form-group">
+           <label>Password:</label>
+           <input type="password" className="form-control" {...password} />
+           {password.touched && password.error && <div className="error">{password.error}</div>}
+         </fieldset>
+         <fieldset className="form-group">
+           <label>Confirm Password:</label>
+           <input type="password" className="form-control" {...passwordConfirm} />
+           {passwordConfirm.touched && passwordConfirm.error && <div className="error">{passwordConfirm.error}</div>}
+         </fieldset>
+         {this.renderAlert()}
+         <button action="submit" className="btn btn-primary">Sign Up</button>
       </form>
     );
   }
@@ -56,7 +49,7 @@ function validate(values) {
   const requiredFields = ['email', 'password', 'passwordConfirm'];
 
   requiredFields.forEach(field => {
-    if (!values[field]) {
+    if (!values[field] || values[field].trim() == '') {
       errors[field] = 'Required'
     }
   });

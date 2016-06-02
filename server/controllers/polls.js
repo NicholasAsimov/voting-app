@@ -7,8 +7,10 @@ const pollHandler = {
     return Poll.find({ author: authorEmail }).sort('-dateAdded');
   },
 
-  addPoll(title, authorEmail, choices) {
-    const poll = { title, author: authorEmail, choices };
+  addPoll({ title, authorEmail, choices }) {
+    const choicesFormatted = choices.map(choice => ({ name: choice, votes: 0 }));
+
+    const poll = { title, author: authorEmail, choices: choicesFormatted };
 
     return Poll.create(poll);
   },
@@ -22,7 +24,7 @@ const pollHandler = {
     return Poll.findById(id);
   },
 
-  vote(id, choice, userIdentificator) {
+  vote({ id, choice, userIdentificator }) {
     // Update existing choice
     const query = { _id: id, 'choices.name': choice };
     const update = { $inc: { 'choices.$.votes': 1 }, $addToSet: { votedUsers: userIdentificator } };

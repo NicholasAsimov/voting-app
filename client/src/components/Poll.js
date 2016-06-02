@@ -1,12 +1,10 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-
+import { Row, Col, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import _ from 'lodash';
 import {Pie as PieChart} from 'react-chartjs';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
 
 function randomColor() {
   return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
@@ -14,14 +12,13 @@ function randomColor() {
 
 class Poll extends React.Component {
   state = {
-    value: this.props.poll.choices[0].name
+    selected: null,
+    custom: '',
   };
 
-  handleChange = (event, index, value) => this.setState({ value });
-
-  handleVote = () => {
-    this.props.vote(this.props.poll._id, this.state.value);
-  };
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({ selected: nextProps.poll.choices[0].name });
+  // }
 
   renderChart(poll) {
     const chartData = {
@@ -42,43 +39,88 @@ class Poll extends React.Component {
       <PieChart
         data={chartData}
         options={chartOptions}
-        width={300}
-        height={200}
+        width={280}
+        height={280}
       />
     );
   }
 
+  handleChange = (e) => this.setState({ custom: e.target.value });
+
+  handleSelect = (e) => this.setState({ selected: e.target.value });
+
+  handleVote = (e) => {
+    e.preventDefault();
+
+    // This needs some cleanup
+    const defaultChoice = _.find(this.props.polls, poll => poll._id == this.props.params.id).choices[0].name;
+    const choice = this.state.selected == 'custom' ? this.state.custom : this.state.selected || defaultChoice;
+
+    this.props.vote({ id: this.props.params.id, choice });
+  };
+
+  renderCustomChoice = () => {
+    if (this.props.authenticated && this.state.selected == 'custom') {
+      return (
+        <FormGroup>
+          <ControlLabel>Your choice:</ControlLabel>
+          <FormControl
+            type="text"
+            id="input-custom"
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+      );
+    }
+  }
+
   render() {
-    const poll = this.props.poll;
+    if (_.isEmpty(this.props.polls)) return <div>Loading...</div>;
+
+    const poll = _.find(this.props.polls, poll => poll._id == this.props.params.id);
+
     return (
-      <Card>
-        <CardHeader
-          title={poll.title}
-          subtitle={poll.choices.map(choice => choice.name).join(' vs ')}
-          actAsExpander={true}
-          showExpandableButton={true}
-        />
-        <CardText expandable={true} className="split-container">
-          <div className="split-item">
-            I want to vote for:
-            <SelectField value={this.state.value} onChange={this.handleChange}>
-              {poll.choices.map((choice, index) => (
-                <MenuItem
-                  key={index}
-                  value={choice.name}
-                  primaryText={choice.name}
-                />
-              ))}
-            </SelectField>
-            <RaisedButton onClick={this.handleVote} label="Vote!" primary />
-          </div>
-          <div className="split-item">
+      <div>
+        <h3>{poll.title}</h3>
+        <Row>
+          <Col xs={5}>
+            <form onSubmit={this.handleVote}>
+              <FormGroup>
+                <ControlLabel>I want to vote for:</ControlLabel>
+                <FormControl componentClass="select" ref="choiceSelect" onChange={this.handleSelect}>
+                  {poll.choices.map((choice, index) => (
+                    <option key={index} value={choice.name}>{choice.name}</option>
+                  ))}
+                  <option value='custom'>I want my own choice</option>
+                </FormControl>
+              </FormGroup>
+              {this.renderCustomChoice()}
+              <Button type="submit" bsStyle="primary" >Vote!</Button>
+            </form>
+            <br />
+            <a
+              className="btn btn-social btn-twitter"
+              target="_blank"
+              href={`https://twitter.com/intent/tweet?text=${poll.title} - Voting App&url=http://wannavote.herokuapp.com/poll/${poll._id}`}
+            >
+              <i className="fa fa-twitter" />
+              <span>Share with friends</span>
+            </a>
+          </Col>
+          <Col xs={7}>
             {this.renderChart(poll)}
-          </div>
-        </CardText>
-      </Card>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }
 
-export default connect(null, actions)(Poll);
+function mapStateToProps(state) {
+  return {
+    polls: state.polls,
+    authenticated: state.auth
+  };
+}
+
+export default connect(mapStateToProps, actions)(Poll);
