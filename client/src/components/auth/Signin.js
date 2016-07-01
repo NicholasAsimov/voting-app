@@ -21,7 +21,7 @@ class Signin extends React.Component {
     const { handleSubmit, fields: { email, password } } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit)}>
+      <form onSubmit={handleSubmit(this.handleFormSubmit)} className="text-left">
         <fieldset className="form-group">
           <label>Email:</label>
           <input type="email" className="form-control" {...email} />

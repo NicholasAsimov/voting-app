@@ -29,8 +29,7 @@ module.exports = app => {
   app.route('/api/poll')
     .post((req, res) => {
       pollHandler.getPoll(req.body.id).then(poll => {
-        // if (poll.votedUsers.indexOf(req.ip) !== -1) {
-        if (false) {
+        if (poll.votedUsers.indexOf(req.ip) !== -1) {
           res.status(409).json({ error: 'User already voted' });
         }
 

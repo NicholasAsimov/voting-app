@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URI);
 // Enable user IP detection
 app.enable('trust proxy');
 
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 app.use(cors());
 app.use(bodyParser.json());
 

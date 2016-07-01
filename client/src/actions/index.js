@@ -67,7 +67,7 @@ export function vote({ id, choice }) {
         });
       })
       // User already voted
-      .catch(response => window.alert('You already voted'))
+      .catch(response => window.alert('You have already voted'))
   };
 }
 

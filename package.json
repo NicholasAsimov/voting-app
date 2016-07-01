@@ -1,0 +1,26 @@
+{
+  "name": "voting-app",
+  "version": "1.0.0",
+  "description": "Written by: [Nicholas Asimov](https://www.freecodecamp.com/nicholasasimov)   [FreeCodeCamp](https://www.freecodecamp.com) - [Dynamic Web Application Project: Voting App](https://www.freecodecamp.com/challenges/build-a-voting-app)",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm start",
+    "server": "cd server && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "postinstall": "cd server && npm install && cd .. && cd client && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicholasAsimov/voting-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NicholasAsimov/voting-app/issues"
+  },
+  "homepage": "https://github.com/NicholasAsimov/voting-app#readme",
+  "dependencies": {
+    "concurrently": "^2.1.0"
+  }
+}
